@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<title>国阳的爱情相册</title>
+		<style>
+			html,
+			body {
+				height: 100%;
+			}
+			
+			body {
+				background-color: #000000;
+				margin: 0;
+				font-family: Helvetica, sans-serif;
+				;
+				overflow: hidden;
+			}
+			
+			a {
+				color: #ffffff;
+			}
+			
+			#info {
+				position: absolute;
+				width: 100%;
+				color: #ffffff;
+				padding: 5px;
+				font-family: Monospace;
+				font-size: 13px;
+				font-weight: bold;
+				text-align: center;
+				z-index: 1;
+			}
+			
+			#menu {
+				position: absolute;
+				bottom: 20px;
+				width: 100%;
+				text-align: center;
+			}
+			
+			.element {
+				width: 120px;
+				height: 160px;
+				box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.5);
+				border: 1px solid rgba(127, 255, 255, 0.25);
+				text-align: center;
+				cursor: default;
+			}
+			
+			.element:hover {
+				box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.75);
+				border: 1px solid rgba(127, 255, 255, 0.75);
+			}
+			
+			.element .number {
+				position: absolute;
+				top: 20px;
+				right: 20px;
+				font-size: 12px;
+				color: rgba(127, 255, 255, 0.75);
+			}
+			
+			.element .symbol {
+				position: absolute;
+				top: 40px;
+				left: 0px;
+				right: 0px;
+				font-size: 60px;
+				font-weight: bold;
+				color: rgba(255, 255, 255, 0.75);
+				text-shadow: 0 0 10px rgba(0, 255, 255, 0.95);
+			}
+			
+			.element .details {
+				position: absolute;
+				bottom: 15px;
+				left: 0px;
+				right: 0px;
+				font-size: 12px;
+				color: rgba(127, 255, 255, 0.75);
+			}
+			
+			button {
+				color: rgba(127, 255, 255, 0.75);
+				background: transparent;
+				outline: 1px solid rgba(127, 255, 255, 0.75);
+				border: 0px;
+				padding: 5px 10px;
+				cursor: pointer;
+			}
+			
+			button:hover {
+				background-color: rgba(0, 255, 255, 0.5);
+			}
+			
+			button:active {
+				color: #000000;
+				background-color: rgba(0, 255, 255, 0.75);
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="http://www.17sucai.com/preview/147469/2014-06-19/3D_Animation/js/three.min.js"></script>
+		<script src="http://www.17sucai.com/preview/147469/2014-06-19/3D_Animation/js/tween.min.js"></script>
+		<script src="http://www.17sucai.com/preview/147469/2014-06-19/3D_Animation/js/TrackballControls.js"></script>
+		<script src="http://www.17sucai.com/preview/147469/2014-06-19/3D_Animation/js/CSS3DRenderer.js"></script>
+
+		<div id="container"></div>
+		
+		<div id="menu">
+			<button id="table">平面</button>
+			<button id="sphere">球形</button>
+			<button id="helix">螺旋</button>
+			<button id="grid">3D阵列</button>
+		</div>
+
+		<script>
+			var table = [
+				"", 3, 1,
+				"He", 4, 1,
+				"Li", 5, 1,
+				"Be", 6, 1,
+				"B", 7, 1,
+				"C", 8, 1,
+				"N", 9, 1,
+				"O", 10, 1,
+				"F", 11, 1,
+				"Ne", 12, 1,
+				"Na", 13, 1,
+				"Mg", 14, 1,
+				"Al", 15, 1,
+				"Si", 16, 1,
+				"P", 3, 2,
+				"S", 4, 2,
+				"Cl", 5, 2,
+				"Ar", 6, 2,
+				"K", 7, 2,
+				"Ca", 8, 2,
+				"Sc", 9, 2,
+				"Ti", 10, 2,
+				"V", 11, 2,
+				"Cr", 12, 2,
+				"Mn", 13, 2,
+				"Fe", 14, 2,
+				"Co", 15, 2,
+				"Ni", 16, 2,
+				"Cu", 3, 3,
+				"Zn", 4, 3,
+				"Ga", 5, 3,
+				"Ge", 6, 3,
+				"As", 7, 3,
+				"Se", 8, 3,
+				"Br", 9, 3,
+				"Kr", 10, 3,
+				"Rb", 11, 3,
+				"Sr", 12, 3,
+				"Y", 13, 3,
+				"Zr", 14, 3,
+				"Nb", 15, 3,
+				"Mo", 16, 3,
+				"Tc", 3, 4,
+				"Ru", 4, 4,
+				"Rh", 5, 4,
+				"Pd", 6, 4,
+				"Ag", 7, 4,
+				"Cd", 8, 4,
+				"In", 9, 4,
+				"Sn", 10, 4,
+				"Sb", 11, 4,
+				"Te", 12, 4,
+				"I", 13, 4,
+				"Xe", 14, 4,
+				"Cs", 15, 4,
+				"Ba", 16, 4,
+				"La", 3, 5,
+				"Ce", 4, 5,
+				"Pr", 5, 5,
+				"Nd", 6, 5,
+				"Pm", 7, 5,
+				"Sm", 8, 5,
+				"Eu", 9, 5,
+				"Gd", 10, 5,
+				"Tb", 11, 5,
+				"Dy", 12, 5,
+				"Ho", 13, 5,
+				"Er", 14, 5,
+				"Tm", 15, 5,
+				"Yb", 16, 5,
+				"Lu", 3, 6,
+				"Hf", 4, 6,
+				"Ta", 5, 6,
+				"W", 6, 6,
+				"Re", 7, 6,
+				"Os", 8, 6,
+				"Ir", 9, 6,
+				"Pt", 10, 6,
+				"Au", 11, 6,
+				"Hg", 12, 6,
+				"Tl", 13, 6,
+				"Pb", 14, 6,
+				"Bi", 15, 6,
+				"Po", 16, 6,
+//				"At", 3, 7,
+//				"Rn", 4, 7,
+//				"Fr", 5, 7,
+//				"Ra", 6, 7,
+//				"Ac", 7, 7,
+//				"Th", 8, 7,
+//				"Pa", 9, 7,
+//				"U", 10, 7,
+//				"Np", 11, 7,
+//				"Pu", 12, 7,
+//				"Am", 13, 7,
+//				"Cm", 14, 7,
+//				"Bk", 15, 7,
+//				"Cf", 16, 7,
+//				"Es", 3, 8,
+//				"Fm", 4, 8,
+//				"Md", 5, 8,
+//				"No", 6, 8,
+//				"Lr", 7, 8,
+//				"Rf", 8, 8,
+//				"Db", 9, 8,
+//				"Sg", 10, 8,
+//				"Bh", 11, 8,
+//				"Hs", 12, 8,
+//				"Mt", 13, 8,
+//				"Ds", 14, 8,
+//				"Rg", 15, 8,
+//				"Cn", 16, 8
+			];
+			
+			for(var i=0; i<table.length; i += 3){
+				var j = i/3;
+				table[i] = "img/" + j + ".jpg";
+				
+				
+			}
+			
+			console.log(table);
+			
+			
+			var camera, scene, renderer;
+			var controls;
+
+			var objects = [];
+			var targets = {
+				table: [],
+				sphere: [],
+				helix: [],
+				grid: []
+			};
+
+			init();
+			animate();
+
+			function init() {
+
+				camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
+				camera.position.z = 3000;
+
+				scene = new THREE.Scene();
+
+				// table
+
+				for(var i = 0; i < table.length; i += 3) {
+					
+					var element = document.createElement('div');
+					element.className = 'element';
+					element.style.background = "url("+table[i]+") center center no-repeat";
+					element.style.backgroundSize = "cover";
+//					element.style.backgroundColor = 'rgba(0,127,127,' + (Math.random() * 0.5 + 0.25) + ')';
+
+//					var number = document.createElement('div');
+//					number.className = 'number';
+//					number.textContent = (i / 5) + 1;
+//					element.appendChild(number);
+
+//					var symbol = document.createElement('div');
+//					symbol.className = 'symbol';
+//					symbol.textContent = table[i];
+//					element.appendChild(symbol);
+
+//					var details = document.createElement('div');
+//					details.className = 'details';
+//					details.innerHTML = table[i + 1] + '<br>' + table[i + 2];
+//					element.appendChild(details);
+
+					var object = new THREE.CSS3DObject(element);
+					object.position.x = Math.random() * 4000 - 2000;
+					object.position.y = Math.random() * 4000 - 2000;
+					object.position.z = Math.random() * 4000 - 2000;
+					scene.add(object);
+
+					objects.push(object);
+
+					//
+
+					var object = new THREE.Object3D();
+					object.position.x = (table[i + 1] * 140) - 1330;
+					object.position.y = -(table[i + 2] * 180) + 990;
+
+					targets.table.push(object);
+
+				}
+
+				// sphere
+
+				var vector = new THREE.Vector3();
+
+				for(var i = 0, l = objects.length; i < l; i++) {
+
+					var phi = Math.acos(-1 + (2 * i) / l);
+					var theta = Math.sqrt(l * Math.PI) * phi;
+
+					var object = new THREE.Object3D();
+
+					object.position.x = 800 * Math.cos(theta) * Math.sin(phi);
+					object.position.y = 800 * Math.sin(theta) * Math.sin(phi);
+					object.position.z = 800 * Math.cos(phi);
+
+					vector.copy(object.position).multiplyScalar(2);
+
+					object.lookAt(vector);
+
+					targets.sphere.push(object);
+
+				}
+
+				// helix
+
+				var vector = new THREE.Vector3();
+
+				for(var i = 0, l = objects.length; i < l; i++) {
+
+					var phi = i * 0.175 + Math.PI;
+
+					var object = new THREE.Object3D();
+
+					object.position.x = 900 * Math.sin(phi);
+					object.position.y = -(i * 8) + 450;
+					object.position.z = 900 * Math.cos(phi);
+
+					vector.x = object.position.x * 2;
+					vector.y = object.position.y;
+					vector.z = object.position.z * 2;
+
+					object.lookAt(vector);
+
+					targets.helix.push(object);
+
+				}
+
+				// grid
+
+				for(var i = 0; i < objects.length; i++) {
+
+					var object = new THREE.Object3D();
+
+					object.position.x = ((i % 5) * 400) - 800;
+					object.position.y = (-(Math.floor(i / 5) % 5) * 400) + 800;
+					object.position.z = (Math.floor(i / 25)) * 1000 - 2000;
+
+					targets.grid.push(object);
+
+				}
+
+				//
+
+				renderer = new THREE.CSS3DRenderer();
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				renderer.domElement.style.position = 'absolute';
+				document.getElementById('container').appendChild(renderer.domElement);
+
+				//
+
+				controls = new THREE.TrackballControls(camera, renderer.domElement);
+				controls.rotateSpeed = 0.5;
+				controls.minDistance = 500;
+				controls.maxDistance = 6000;
+				controls.addEventListener('change', render);
+
+				var button = document.getElementById('table');
+				button.addEventListener('click', function(event) {
+
+					transform(targets.table, 2000);
+
+				}, false);
+
+				var button = document.getElementById('sphere');
+				button.addEventListener('click', function(event) {
+
+					transform(targets.sphere, 2000);
+
+				}, false);
+
+				var button = document.getElementById('helix');
+				button.addEventListener('click', function(event) {
+
+					transform(targets.helix, 2000);
+
+				}, false);
+
+				var button = document.getElementById('grid');
+				button.addEventListener('click', function(event) {
+
+					transform(targets.grid, 2000);
+
+				}, false);
+
+				transform(targets.table, 5000);
+
+				//
+
+				window.addEventListener('resize', onWindowResize, false);
+
+			}
+
+			function transform(targets, duration) {
+
+				TWEEN.removeAll();
+
+				for(var i = 0; i < objects.length; i++) {
+
+					var object = objects[i];
+					var target = targets[i];
+
+					new TWEEN.Tween(object.position)
+						.to({
+							x: target.position.x,
+							y: target.position.y,
+							z: target.position.z
+						}, Math.random() * duration + duration)
+						.easing(TWEEN.Easing.Exponential.InOut)
+						.start();
+
+					new TWEEN.Tween(object.rotation)
+						.to({
+							x: target.rotation.x,
+							y: target.rotation.y,
+							z: target.rotation.z
+						}, Math.random() * duration + duration)
+						.easing(TWEEN.Easing.Exponential.InOut)
+						.start();
+
+				}
+
+				new TWEEN.Tween(this)
+					.to({}, duration * 2)
+					.onUpdate(render)
+					.start();
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize(window.innerWidth, window.innerHeight);
+
+				render();
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame(animate);
+
+				TWEEN.update();
+
+				controls.update();
+
+			}
+
+			function render() {
+
+				renderer.render(scene, camera);
+
+			}
+		</script>
+	</body>
+
+</html>
